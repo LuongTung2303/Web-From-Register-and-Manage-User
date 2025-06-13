@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("WebFormRegister")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+48b2e4058ad8bc6475380f86b47865e1cba35e68")]
 [assembly: System.Reflection.AssemblyProductAttribute("WebFormRegister")]
 [assembly: System.Reflection.AssemblyTitleAttribute("WebFormRegister")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
