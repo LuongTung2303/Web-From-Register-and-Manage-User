@@ -1,8 +1,89 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model WebFormRegister.Models.UserViewModel
+@{
+    ViewData["Title"] = "Đăng ký người dùng";
+    bool isEdit = Model.NewUser != null && Model.NewUser.Id != 0;
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="min-vh-100 d-flex flex-column justify-content-center align-items-center">
+    <div class="card shadow w-100" style="max-width: 500px;">
+        <div class="card-body">
+            <h4 class="card-title text-center mb-4">@((isEdit ? "Sửa" : "Đăng ký") + " người dùng")</h4>
+            <form asp-action="Index" method="post" novalidate>
+                <input type="hidden" asp-for="NewUser.Id" />
+                <div class="mb-3">
+                    <label asp-for="NewUser.FullName" class="form-label"></label>
+                    <input asp-for="NewUser.FullName" class="form-control" />
+                    <span asp-validation-for="NewUser.FullName" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="NewUser.DateOfBirth" class="form-label"></label>
+                    <input asp-for="NewUser.DateOfBirth" class="form-control" type="date" />
+                    <span asp-validation-for="NewUser.DateOfBirth" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="NewUser.Phone" class="form-label"></label>
+                    <input asp-for="NewUser.Phone" class="form-control" />
+                    <span asp-validation-for="NewUser.Phone" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="NewUser.Email" class="form-label"></label>
+                    <input asp-for="NewUser.Email" class="form-control" />
+                    <span asp-validation-for="NewUser.Email" class="text-danger"></span>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">@((isEdit ? "Cập nhật" : "Đăng ký"))</button>
+                @if (isEdit)
+                {
+                    <a href="@Url.Action("Index", "Home")" class="btn btn-secondary w-100 mt-2">Hủy</a>
+                }
+            </form>
+        </div>
+    </div>
+    <div class="card shadow w-100 mt-4" style="max-width: 700px;">
+        <div class="card-body">
+            <h5 class="card-title mb-3">Danh sách người dùng đã đăng ký</h5>
+            <div class="table-responsive">
+                <table class="table table-bordered align-middle text-center">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Họ và tên</th>
+                            <th>Ngày sinh</th>
+                            <th>Số điện thoại</th>
+                            <th>Email</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.Users != null && Model.Users.Any())
+                        {
+                            foreach (var user in Model.Users)
+                            {
+                                <tr>
+                                    <td>@user.FullName</td>
+                                    <td>@user.DateOfBirth.ToString("dd/MM/yyyy")</td>
+                                    <td>@user.Phone</td>
+                                    <td>@user.Email</td>
+                                    <td>
+                                        <a href="@Url.Action("Index", "Home", new { editId = user.Id })" class="btn btn-warning btn-sm me-1">Sửa</a>
+                                        <form asp-action="Delete" method="post" asp-route-id="@user.Id" style="display:inline;" onsubmit="return confirm('Bạn có chắc muốn xóa người dùng này?');">
+                                            <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="5" class="text-muted">Chưa có người dùng nào.</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
